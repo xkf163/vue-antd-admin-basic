@@ -1,4 +1,4 @@
-import routerMap from '@/router/async/router.map'
+// import routerMap from '@/router/async/router.map'
 import {mergeI18nFromRoutes} from '@/utils/i18n'
 import Router from 'vue-router'
 import deepMerge from 'deepmerge'
@@ -20,6 +20,18 @@ function setAppOptions(options) {
   appOptions.router = router
   appOptions.store = store
   appOptions.i18n = i18n
+}
+
+function translateRoutesConfig(routesConfig) {
+  console.log(routesConfig)
+  routesConfig.forEach(route => {
+    const {component} = route
+    let t = typeof (component);
+    if (t == 'string') {
+      route.component = ()=>import('@/' + component)
+    }
+  })
+  return routesConfig
 }
 
 /**
@@ -116,11 +128,18 @@ function loadRoutes(routesConfig) {
   const asyncRoutes = store.state.setting.asyncRoutes
   if (asyncRoutes) {
     if (routesConfig && routesConfig.length > 0) {
-      const routes = parseRoutes(routesConfig, routerMap)
+      // const routes = parseRoutes(routesConfig, routerMap)
+      // console.log("routes")
+      // console.log(routes)
+
+      const routes = routesConfig
       const finalRoutes = mergeRoutes(basicOptions.routes, routes)
       formatRoutes(finalRoutes)
       router.options = {...router.options, routes: finalRoutes}
       router.matcher = new Router({...router.options, routes:[]}).matcher
+
+      console.log("finalRoutes")
+      console.log(finalRoutes)
       router.addRoutes(finalRoutes)
     }
   }
@@ -257,7 +276,7 @@ function loadGuards(guards, options) {
   const {beforeEach, afterEach} = guards
   const {router} = options
   beforeEach.forEach(guard => {
-    console.log(guard)
+    //console.log(guard)
     if (guard && typeof guard === 'function') {
       router.beforeEach((to, from, next) =>
       {
@@ -274,4 +293,4 @@ function loadGuards(guards, options) {
   })
 }
 
-export {parseRoutes, loadRoutes, formatAuthority, getI18nKey, loadGuards, deepMergeRoutes, formatRoutes, setAppOptions}
+export {parseRoutes, loadRoutes, formatAuthority, getI18nKey, loadGuards, deepMergeRoutes, formatRoutes, setAppOptions,translateRoutesConfig}

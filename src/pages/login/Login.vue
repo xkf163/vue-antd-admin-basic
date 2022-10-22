@@ -99,7 +99,7 @@
 import CommonLayout from '@/layouts/CommonLayout'
 import {getCodeImage} from '@/services/user' //getRoutesConfig ,
 import {setAuthorization} from '@/utils/request'
-import {loadRoutes} from '@/utils/routerUtil'
+import {loadRoutes,translateRoutesConfig} from '@/utils/routerUtil'
 import {mapMutations,mapActions} from 'vuex'
 import { timeFix } from '@/utils/util'
 
@@ -195,7 +195,7 @@ export default {
         this.GetPermissionList().then(result => {
           result = result.result
           console.log(result)
-          const routesConfig = result.menu
+          const routesConfig = translateRoutesConfig(result.menu.pop().children)
           loadRoutes(routesConfig)
 
           this.$router.push({ path: "/demo" }).catch(()=>{
