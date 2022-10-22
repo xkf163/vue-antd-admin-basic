@@ -244,6 +244,12 @@ export default {
       console.log(this.routesMap)
       console.log(chose)
 
+      if (chose  === undefined){
+        let pathArray = route.path.split("/")
+        chose = this.routesMap["/"+pathArray[1]]
+      }
+
+
       if (chose.meta && chose.meta.highlight) {
         chose = this.routesMap[chose.meta.highlight]
         const resolve = this.$router.resolve({path: chose.fullPath})
