@@ -1,8 +1,9 @@
-// import routerMap from '@/router/async/router.map'
+import routerMap from '@/router/async/router.map'
 import {mergeI18nFromRoutes} from '@/utils/i18n'
 import Router from 'vue-router'
 import deepMerge from 'deepmerge'
 import basicOptions from '@/router/async/config.async'
+
 
 //应用配置
 let appOptions = {
@@ -27,11 +28,17 @@ function translateRoutesConfig(routesConfig) {
   routesConfig.forEach(route => {
     const {component} = route
     let t = typeof (component);
+    console.log(t)
     if (t == 'string') {
-      route.component = ()=>import('@/' + component)
+      route.component = resolve => require(['@/layouts/AdminLayout'], resolve)
     }
   })
+  console.log(routesConfig)
   return routesConfig
+}
+
+export const loadComponent = (componentPath) => { // 路由懒加载
+  return (resolve) => require([`@/${componentPath}`], resolve)
 }
 
 /**
@@ -40,16 +47,24 @@ function translateRoutesConfig(routesConfig) {
  * @param routerMap 本地路由组件注册配置
  */
 function parseRoutes(routesConfig, routerMap) {
+
   let routes = []
   routesConfig.forEach(item => {
     // 获取注册在 routerMap 中的 router，初始化 routeCfg
     let router = undefined, routeCfg = {}
+    console.log("typeof item.component",typeof item)
     if (typeof item === 'string') {
       router = routerMap[item]
       routeCfg = {path: (router && router.path) || item, router: item}
     } else if (typeof item === 'object') {
-      router = routerMap[item.router]
-      routeCfg = item
+      console.log("typeof item.component",typeof item.component)
+       if( typeof item.component === 'string') {
+         console.log(item)
+         item.component  = loadComponent(`${item.component}`)
+         item.name = item.meta.title
+       }
+       router = routerMap[item.router]
+       routeCfg = item
     }
     if (!router) {
       console.warn(`can't find register for router ${routeCfg.router}, please register it in advance.`)
@@ -95,6 +110,11 @@ function parseRoutes(routesConfig, routerMap) {
     }
     routes.push(route)
   })
+
+  // rootRouter.children  = routes
+  //
+  // finallyRoutes.push(rootRouter)
+
   return routes
 }
 
@@ -118,6 +138,9 @@ function loadRoutes(routesConfig) {
   // 应用配置
   const {router, store, i18n} = appOptions
 
+  console.log("routesConfig")
+  console.log(routesConfig)
+
   // 如果 routesConfig 有值，则更新到本地，否则从本地获取
   if (routesConfig) {
     store.commit('account/setRoutesConfig', routesConfig)
@@ -128,18 +151,14 @@ function loadRoutes(routesConfig) {
   const asyncRoutes = store.state.setting.asyncRoutes
   if (asyncRoutes) {
     if (routesConfig && routesConfig.length > 0) {
-      // const routes = parseRoutes(routesConfig, routerMap)
-      // console.log("routes")
-      // console.log(routes)
-
-      const routes = routesConfig
+      const routes = parseRoutes(routesConfig, routerMap)
       const finalRoutes = mergeRoutes(basicOptions.routes, routes)
       formatRoutes(finalRoutes)
       router.options = {...router.options, routes: finalRoutes}
       router.matcher = new Router({...router.options, routes:[]}).matcher
-
       console.log("finalRoutes")
       console.log(finalRoutes)
+
       router.addRoutes(finalRoutes)
     }
   }

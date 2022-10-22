@@ -14,12 +14,12 @@ module.exports = {
   fixedTabs: false,                      //固定页签头，true:固定，false:不固定
   pageWidth: 'fixed',                   //内容区域宽度，fixed:固定宽度，fluid:流式宽度
   weekMode: false,                      //色弱模式，true:开启，false:不开启
-  multiPage: false,                     //多页签模式，true:开启，false:不开启
+  multiPage: true,                     //多页签模式，true:开启，false:不开启
   cachePage: true,                      //是否缓存页面数据，仅多页签模式下生效，true 缓存, false 不缓存
   hideSetting: false,                   //隐藏设置抽屉，true:隐藏，false:不隐藏
   systemName: 'Vue Antd Admin',         //系统名称
   copyright: '2018 ICZER 工作室出品',     //copyright
-  asyncRoutes: false,                   //异步加载路由，true:开启，false:不开启
+  asyncRoutes: true,                   //异步加载路由，true:开启，false:不开启
   showPageTitle: true,                  //是否显示页面标题（PageLayout 布局中的页面标题），true:显示，false:不显示
   filterMenu: true,                    //根据权限过滤菜单，true:过滤，false:不过滤
   animate: {                            //动画设置

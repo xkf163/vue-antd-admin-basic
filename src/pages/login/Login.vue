@@ -99,7 +99,7 @@
 import CommonLayout from '@/layouts/CommonLayout'
 import {getCodeImage} from '@/services/user' //getRoutesConfig ,
 import {setAuthorization} from '@/utils/request'
-import {loadRoutes,translateRoutesConfig} from '@/utils/routerUtil'
+import {loadRoutes} from '@/utils/routerUtil' //translateRoutesConfig
 import {mapMutations,mapActions} from 'vuex'
 import { timeFix } from '@/utils/util'
 
@@ -189,16 +189,19 @@ export default {
         //this.setRoles(roles)
         setAuthorization({token: loginRes.result.token, expireAt: new Date(loginRes.result.expireAt)})
 
-
-
         //获取路由配置
         this.GetPermissionList().then(result => {
           result = result.result
-          console.log(result)
-          const routesConfig = translateRoutesConfig(result.menu.pop().children)
+          let menu = result.menu
+          menu = menu[menu.length-1]
+          let routesConfig =  []
+          let rootObj  = {
+            router: 'root',
+            children :  menu.children
+          }
+          routesConfig.push(rootObj)
           loadRoutes(routesConfig)
-
-          this.$router.push({ path: "/demo" }).catch(()=>{
+          this.$router.push({ path: "/homepage/workspace" }).catch(()=>{
             console.log('登录跳转首页出错,这个错误从哪里来的')
           })
           this.$notification.success({
