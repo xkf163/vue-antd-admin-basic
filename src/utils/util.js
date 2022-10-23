@@ -1,8 +1,6 @@
 import enquireJs from 'enquire.js'
 import { isURL } from '@/utils/validate'
 
-
-
 // 生成首页路由
 export function generateIndexRouter(data) {
   let indexRouter = [{

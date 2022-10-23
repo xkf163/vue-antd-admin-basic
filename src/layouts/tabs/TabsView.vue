@@ -63,6 +63,7 @@ export default {
     this.loadCachedTabs()
     const route = this.$route
     if (this.pageList.findIndex(item => item.path === route.path) === -1) {
+      console.log(route)
       this.pageList.push(this.createPage(route))
     }
     this.activePage = route.path
@@ -258,6 +259,7 @@ export default {
       sessionStorage.setItem(process.env.VUE_APP_TBAS_KEY, JSON.stringify(tabs))
     },
     createPage(route) {
+      console.log(route)
       return {
         keyPath: route.matched[route.matched.length - 1].path,
         fullPath: route.fullPath, loading: false,

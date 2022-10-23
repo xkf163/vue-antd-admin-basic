@@ -48,8 +48,8 @@ const resolvePath = (path, params = {}) => {
 
 const toRoutesMap = (routes) => {
   const map = {}
-  console.log("toRoutesMap")
-  console.log(routes)
+  // console.log("toRoutesMap")
+  // console.log(routes)
 
   routes.forEach(route => {
     map[route.fullPath] = route
@@ -236,19 +236,18 @@ export default {
     },
     getSelectedKeys() {
       let matches = this.$route.matched
-      console.log(matches)
+      // console.log(matches)
       const route = matches[matches.length - 1]
       let chose = this.routesMap[route.path]
-      console.log("chose")
-      console.log(route.path)
-      console.log(this.routesMap)
-      console.log(chose)
+      // console.log("chose")
+      // console.log(route.path)
+      // console.log(this.routesMap)
+      // console.log(chose)
 
       if (chose  === undefined){
         let pathArray = route.path.split("/")
         chose = this.routesMap["/"+pathArray[1]]
       }
-
 
       if (chose.meta && chose.meta.highlight) {
         chose = this.routesMap[chose.meta.highlight]

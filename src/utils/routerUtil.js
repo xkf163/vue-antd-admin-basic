@@ -47,22 +47,26 @@ export const loadComponent = (componentPath) => { // 路由懒加载
  * @param routerMap 本地路由组件注册配置
  */
 function parseRoutes(routesConfig, routerMap) {
-
   let routes = []
   routesConfig.forEach(item => {
     // 获取注册在 routerMap 中的 router，初始化 routeCfg
     let router = undefined, routeCfg = {}
-    console.log("typeof item.component",typeof item)
+    // console.log("typeof item",typeof item)
+    // console.log(item)
+
     if (typeof item === 'string') {
-      router = routerMap[item]
-      routeCfg = {path: (router && router.path) || item, router: item}
+       router = routerMap[item]
+       routeCfg = {path: (router && router.path) || item, router: item}
     } else if (typeof item === 'object') {
-      console.log("typeof item.component",typeof item.component)
+       console.log("typeof item.component",typeof item.component)
        if( typeof item.component === 'string') {
          console.log(item)
          item.component  = loadComponent(`${item.component}`)
          item.name = item.meta.title
+         item.meta.invisible =  item.hidden
+         item.title =  "itemhidden"
        }
+       console.log(item)
        router = routerMap[item.router]
        routeCfg = item
     }
@@ -96,6 +100,7 @@ function parseRoutes(routesConfig, routerMap) {
     })
     Object.assign(meta, cfgMeta)
     const route = {
+      title: routeCfg.title || router.title,
       path: routeCfg.path || router.path || routeCfg.router,
       name: routeCfg.name || router.name,
       component: router.component,
@@ -110,11 +115,6 @@ function parseRoutes(routesConfig, routerMap) {
     }
     routes.push(route)
   })
-
-  // rootRouter.children  = routes
-  //
-  // finallyRoutes.push(rootRouter)
-
   return routes
 }
 
@@ -134,12 +134,8 @@ function loadRoutes(routesConfig) {
     }
   }
   /*************** 兼容 version < v0.6.1 *****************/
-
   // 应用配置
   const {router, store, i18n} = appOptions
-
-  console.log("routesConfig")
-  console.log(routesConfig)
 
   // 如果 routesConfig 有值，则更新到本地，否则从本地获取
   if (routesConfig) {
@@ -158,7 +154,6 @@ function loadRoutes(routesConfig) {
       router.matcher = new Router({...router.options, routes:[]}).matcher
       console.log("finalRoutes")
       console.log(finalRoutes)
-
       router.addRoutes(finalRoutes)
     }
   }
