@@ -63,7 +63,8 @@ function parseRoutes(routesConfig, routerMap) {
          item.component  = loadComponent(`${item.component}`)
          item.name = item.meta.title.includes("|") ? item.meta.title.split("|")[0]: item.meta.title
          item.meta.invisible =  item.hidden
-         item.title =  item.meta.title.includes("|") ? item.meta.title.split("|")[1]: item.meta.title
+         item.page  = {}
+         item.page.title =  item.meta.title.includes("|") ? item.meta.title.split("|")[1]: item.meta.title
        }
        console.log(item)
        router = routerMap[item.router]
@@ -103,7 +104,7 @@ function parseRoutes(routesConfig, routerMap) {
       name: routeCfg.name || router.name,
       component: router.component,
       redirect: routeCfg.redirect || router.redirect,
-      meta: {...meta, title: routeCfg.title || router.title, authority: meta.authority || '*'}
+      meta: {...meta, authority: meta.authority || '*'}
     }
     if (routeCfg.invisible || router.invisible) {
       route.meta.invisible = true
