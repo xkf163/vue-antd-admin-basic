@@ -53,7 +53,6 @@ function parseRoutes(routesConfig, routerMap) {
     let router = undefined, routeCfg = {}
     // console.log("typeof item",typeof item)
     // console.log(item)
-
     if (typeof item === 'string') {
        router = routerMap[item]
        routeCfg = {path: (router && router.path) || item, router: item}
@@ -62,9 +61,9 @@ function parseRoutes(routesConfig, routerMap) {
        if( typeof item.component === 'string') {
          console.log(item)
          item.component  = loadComponent(`${item.component}`)
-         item.name = item.meta.title
+         item.name = item.meta.title.includes("|") ? item.meta.title.split("|")[0]: item.meta.title
          item.meta.invisible =  item.hidden
-         item.title =  "itemhidden"
+         item.title =  item.meta.title.includes("|") ? item.meta.title.split("|")[1]: item.meta.title
        }
        console.log(item)
        router = routerMap[item.router]
@@ -100,12 +99,11 @@ function parseRoutes(routesConfig, routerMap) {
     })
     Object.assign(meta, cfgMeta)
     const route = {
-      title: routeCfg.title || router.title,
       path: routeCfg.path || router.path || routeCfg.router,
       name: routeCfg.name || router.name,
       component: router.component,
       redirect: routeCfg.redirect || router.redirect,
-      meta: {...meta, authority: meta.authority || '*'}
+      meta: {...meta, title: routeCfg.title || router.title, authority: meta.authority || '*'}
     }
     if (routeCfg.invisible || router.invisible) {
       route.meta.invisible = true

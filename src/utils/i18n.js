@@ -3,6 +3,7 @@ import VueI18n from 'vue-i18n'
 import routesI18n from '@/router/i18n'
 import './Objects'
 import {getI18nKey} from '@/utils/routerUtil'
+import {console} from "vuedraggable/src/util/helper";
 
 /**
  * 创建 i18n 配置
@@ -63,6 +64,7 @@ function mergeI18nFromRoutes(i18n, routes) {
   formatFullPath(routes)
   const CN = generateI18n(new Object(), routes, 'name')
   const US = generateI18n(new Object(), routes, 'path')
+  console.log(CN)
   i18n.mergeLocaleMessage('CN', CN)
   i18n.mergeLocaleMessage('US', US)
   const messages = routesI18n.messages
