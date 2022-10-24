@@ -182,7 +182,9 @@ export default {
       const loginRes = res
       if (loginRes.code >= 0) {
         const {userInfo,departs,sysAllDictItems} = loginRes.result
-        this.setUser(userInfo)
+        let user  =  userInfo
+        user.name = userInfo.username
+        this.setUser(user)
         this.setDeparts(departs)
         this.setDictionaries(sysAllDictItems)
         //this.setPermissions(permissions) -, permissions, roles
