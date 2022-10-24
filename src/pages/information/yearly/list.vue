@@ -118,16 +118,16 @@
                 // 检查列表
                 dictCode: [],
                 // typeName: "0",
-                getDataParmas: {
-                    pageNo: "1",
-                    pageSize: "10",
-                    title: "",
-                    wfStateNameList: "新建",
-                },
                 loading:true,
                 url:{
-                    list: '/reportYear/reportYear/list'
-                }
+                    list: '/jeecg-cloud-supervise/defectInformation/defectInformation/listLike'
+                },
+                getDataParmas:{
+                    pageNo:"1",
+                    pageSize:"10",
+                    releaseStatus:"0",
+                    tableName: "report_year"
+                },
             }
         },
         created() {
