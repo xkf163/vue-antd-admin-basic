@@ -157,6 +157,8 @@ export default {
       return !icon || icon == 'none' ? null : h(Icon, {props: {type:  icon}})
     },
     renderMenuItem: function (h, menu) {
+      // console.log("renderMenuItem")
+      // console.log(this.$t(getI18nKey(menu.fullPath)))
       let tag = 'router-link'
       const path = resolvePath(menu.fullPath, menu.meta.params)
       let config = {props: {to: {path, query: menu.meta.query}, }, attrs: {style: 'overflow:hidden;white-space:normal;text-overflow:clip;'}}
@@ -258,6 +260,9 @@ export default {
     }
   },
   render (h) {
+    // console.log("hhhh")
+    // console.log(h)
+    // console.log(this.options)
     return h(
       Menu,
       {

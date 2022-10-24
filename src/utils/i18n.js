@@ -32,6 +32,12 @@ function generateI18n(lang, routes, valueKey) {
   routes.forEach(route => {
     let keys = getI18nKey(route.fullPath).split('.')
     let value = valueKey === 'path' ? route[valueKey].split('/').filter(item => !item.startsWith(':') && item != '').join('.') : route[valueKey]
+
+    //改造路由name重复问题221024xkf
+    if( route["meta"] && route["meta"]["page"] && route["meta"]["page"]["menuname"]){
+      value = valueKey === "name" ? route["meta"]["page"]["menuname"] : valueKey
+    }
+
     lang.assignProps(keys, value)
     if (route.children) {
       generateI18n(lang, route.children, valueKey)
@@ -64,6 +70,7 @@ function mergeI18nFromRoutes(i18n, routes) {
   formatFullPath(routes)
   const CN = generateI18n(new Object(), routes, 'name')
   const US = generateI18n(new Object(), routes, 'path')
+  console.log("CN:::"+CN)
   console.log(CN)
   i18n.mergeLocaleMessage('CN', CN)
   i18n.mergeLocaleMessage('US', US)

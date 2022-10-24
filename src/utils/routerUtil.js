@@ -23,19 +23,7 @@ function setAppOptions(options) {
   appOptions.i18n = i18n
 }
 
-function translateRoutesConfig(routesConfig) {
-  console.log(routesConfig)
-  routesConfig.forEach(route => {
-    const {component} = route
-    let t = typeof (component);
-    console.log(t)
-    if (t == 'string') {
-      route.component = resolve => require(['@/layouts/AdminLayout'], resolve)
-    }
-  })
-  console.log(routesConfig)
-  return routesConfig
-}
+
 
 export const loadComponent = (componentPath) => { // 路由懒加载
   return (resolve) => require([`@/${componentPath}`], resolve)
@@ -57,16 +45,17 @@ function parseRoutes(routesConfig, routerMap) {
        router = routerMap[item]
        routeCfg = {path: (router && router.path) || item, router: item}
     } else if (typeof item === 'object') {
-       console.log("typeof item.component",typeof item.component)
+       //console.log("typeof item.component",typeof item.component)
        if( typeof item.component === 'string') {
          console.log(item)
          item.component  = loadComponent(`${item.component}`)
          item.name = item.meta.title.includes("|") ? item.meta.title.split("|")[0]: item.meta.title
          item.meta.invisible =  item.hidden
          item.page  = {}
-         item.page.title =  item.meta.title.includes("|") ? item.meta.title.split("|")[1]: item.meta.title
+         item.page.menuname =  item.meta.title.includes("|") ? item.meta.title.split("|")[1]: item.meta.title
+         item.page.title =  item.name
        }
-       console.log(item)
+       //console.log(item)
        router = routerMap[item.router]
        routeCfg = item
     }
@@ -306,4 +295,4 @@ function loadGuards(guards, options) {
   })
 }
 
-export {parseRoutes, loadRoutes, formatAuthority, getI18nKey, loadGuards, deepMergeRoutes, formatRoutes, setAppOptions,translateRoutesConfig}
+export {parseRoutes, loadRoutes, formatAuthority, getI18nKey, loadGuards, deepMergeRoutes, formatRoutes, setAppOptions}
