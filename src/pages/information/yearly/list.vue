@@ -132,6 +132,7 @@
         },
         created() {
             this.length=this.userType
+            console.log(this.$route.path)
         },
         computed: {
 
