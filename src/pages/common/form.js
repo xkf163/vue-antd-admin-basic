@@ -11,6 +11,21 @@ export const myFormMixin = {
     },
     methods: {
 
+        // 生成年份列别
+        yearsListed() {
+            let nowDate = new Date()
+            let year = nowDate.getFullYear()
+            let yearList = []
+            for (var i = 0; i < 10; i++) {
+                let object = {
+                    value: i,
+                    title: year--
+                }
+                yearList.push(object)
+            }
+            return yearList
+        },
+
         normFile(e) {
             console.log('Upload event:', e);
             if (Array.isArray(e)) {
