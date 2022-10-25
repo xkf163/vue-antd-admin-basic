@@ -183,7 +183,7 @@ export default {
       if (loginRes.code >= 0) {
         const {userInfo,departs,sysAllDictItems} = loginRes.result
         let user  =  userInfo
-        user.name = userInfo.username
+        user.name = userInfo.realname
         this.setUser(user)
         this.setDeparts(departs)
         this.setDictionaries(sysAllDictItems)
@@ -203,7 +203,7 @@ export default {
           }
           routesConfig.push(rootObj)
           loadRoutes(routesConfig)
-          this.$router.push({ path: "/homepage/workspace" }).catch(()=>{
+          this.$router.push({ path: "/home/workspace" }).catch(()=>{
             console.log('登录跳转首页出错,这个错误从哪里来的')
           })
           this.$notification.success({

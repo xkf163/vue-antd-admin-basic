@@ -43,59 +43,46 @@
                         title: '序号',
                         dataIndex: '',
                         key: 'rowIndex',
+                        align: "left",
                         customRender: function (t, r, index) {
                             return parseInt(index) + 1;
                         }
                     },
                     {
                         title: '年度',
+
+                        align: "left",
                         dataIndex: 'year',
+
                     },
                     {
                         title: '填报单位',
+                        align: "left",
+
                         width: "30%",
                         dataIndex: 'reportUnit',
+
                     },
                     {
                         title: '报告类别',
-                        dataIndex: 'reportCategory',
-                        customRender: function (t) {
-                            let ret  = t
-                            switch (t){
-                                case "1":
-                                    ret = "企业本年度的安全生产责任制"  // 当表达式的结果等于 value1 时，则执行该代码
-                                    break;
-                                case "2":
-                                    ret = "上一年度安全生产工作总结"
-                                    break;
-                                case "3":
-                                    ret = "安全风险管控年度报告"
-                                    break;
-                                case "4":
-                                    ret = "隐患排查治理年度总结"
-                                    break;
-                                case "5":
-                                    ret = "电力安全生产标准化企业自查报告"
-                                    break;
-                                case "6":
-                                    ret = "技术监督年报"
-                                    break;
-                            }
-                            console.log(ret)
-                            return ret;
-                        }
+                        align: "left",
+                        dataIndex: 'yearlyType_dictText'
                     },
                     {
                         title: '起草时间',
+                        align: "left",
                         dataIndex: 'updateTime',
+
                     },
                     {
                         title: '状态',
+                        align: "left",
                         scopedSlots: { customRender: 'releaseStatus' },
                         dataIndex: 'releaseStatus'
                     },
                     {
                         title: '编号',
+                        align: "left",
                         dataIndex: 'infoNumber'
                     },
 
@@ -120,12 +107,12 @@
                 // typeName: "0",
                 loading:true,
                 url:{
-                    list: '/jeecg-cloud-supervise/defectInformation/defectInformation/listLike'
+                    list: '/jeecg-cloud-nea/defectInformation/defectInformation/listLike'
                 },
                 getDataParmas:{
                     pageNo:"1",
                     pageSize:"10",
-                    releaseStatus:"0",
+                    releaseStatus:"1",
                     tableName: "report_year"
                 },
             }
@@ -222,10 +209,11 @@
             // 编辑
             async edit(record) {
                 this.$router.push({
-                    path: "/childenPages/addYear",
-                    query: {
-                        id: record.id,
-                    },
+                    path: "/info/yearly/"+record.id,
+                    // params:{
+                    //     id: record.id,
+                    //     infoNumber: record.infoNumber
+                    // }
                 })
             }
         },

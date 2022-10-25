@@ -212,7 +212,7 @@
                 url:{
                     add: "/jeecg-demo/reportYear/reportYear/add",
                     edit: "/jeecg-demo/reportYear/reportYear/edit",
-                    get: "/jeecg-demo/reportYear/reportYear/list",
+                    get: "/jeecg-cloud-nea/reportYear/reportYear/list",
                     unique: "/jeecg-demo/reportYear/reportYear/unique"
                 }
             }

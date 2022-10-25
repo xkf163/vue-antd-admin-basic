@@ -37,10 +37,15 @@ export const myFormMixin = {
         //页面初始化
         async onLoad(){
             console.log("onLoad mixin start: "+this.isNewDoc)
-            this.isNewDoc = this.$route.query.id == "-1" ? true : false
-            this.form.id = this.$route.query.id == "-1" ? "" : this.$route.query.id
+            // this.isNewDoc = this.$route.query.id == "-1" ? true : false
+            // this.form.id = this.$route.query.id == "-1" ? "" : this.$route.query.id
+            console.log("this.$route.params")
+            console.log(this.$route.params)
+            this.isNewDoc = this.$route.params.id == "-1" ? true : false
+            this.form.id = this.$route.params.id == "-1" ? "" : this.$route.params.id
+            // this.form.infoNumber = this.$route.params.infoNumber
 
-            this.userId = JSON.parse(window.localStorage.getItem('admin.user')).realname
+            this.userId = JSON.parse(window.localStorage.getItem('neastationmanagesystem.user')).realname
             if (this.isNewDoc){
                 this.operation = []
                 this.form.wfStateNameList = "新建"
@@ -49,6 +54,7 @@ export const myFormMixin = {
                 this.form.filledBy = JSON.parse(window.localStorage.getItem("admin.user")).realname
             }else{
                 let res = await request(this.url.get, "get", {"id":this.form.id})
+                //let res = await request(this.url.get+"?infoNumber="+this.form.infoNumber, "get")
                 if (res.data.code == '200') {
                     this.form = res.data.result.records[0]
                     this.operation = res.data.result.records[0].operation
